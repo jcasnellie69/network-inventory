@@ -1,0 +1,3 @@
+## 2026-04-17 - DataTables Accessibility and Empty States
+**Learning:** Vanilla DataTables lacks some accessibility features by default, like visible keyboard focus (`focus-visible`) and distinct hover states on its generated pagination buttons. Also, since it renders asynchronously based on a JSON fetch, users see an awkward, completely empty table outline during loading.
+**Action:** Always add `*:focus-visible` generic styles if missing, explicit `cursor: pointer` + hover states to `.paginate_button`, and a hardcoded loading placeholder (`<td colspan="X">`) in the initial HTML `<tbody>` which DataTables will automatically overwrite once the data is loaded.
