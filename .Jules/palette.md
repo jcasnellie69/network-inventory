@@ -1,0 +1,3 @@
+## 2024-05-18 - Dark Theme Focus Rings and Async Tables
+**Learning:** Default browser focus rings often have insufficient contrast or disappear entirely against custom dark theme backgrounds (`#0d1117`). Additionally, vanilla DataTables initialized over an empty `<tbody>` while waiting for an asynchronous `fetch` leaves a jarring empty space without feedback for screen readers or visual users.
+**Action:** Always explicitly define `:focus-visible` styles (e.g., `outline: 2px solid var(--accent); outline-offset: 2px;`) for interactive elements in dark-themed applications. For tables relying on async data, always hardcode an initial loading row with `aria-live="polite"` before the JavaScript library takes over rendering.
