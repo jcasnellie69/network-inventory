@@ -1,3 +1,3 @@
-## 2024-05-24 - Focus Indicators on Dark Themes
-**Learning:** In a very dark theme (e.g., background `#0d1117`), standard browser focus outlines often blend into the background, making keyboard navigation inaccessible. Explicit, high-contrast `:focus-visible` styles are necessary.
-**Action:** Always implement explicit `:focus-visible` styles with an `outline-offset` using a high-contrast accent color for all interactive elements to ensure accessibility for keyboard users on dark themes.
+## 2026-04-24 - High-Contrast Focus Indicators in Dark Themes
+**Learning:** Dark themes (like `#0d1117`) often swallow default browser focus rings, making keyboard navigation difficult or impossible for interactive elements like selects, inputs, and custom pagination buttons.
+**Action:** Add explicit `:focus-visible` styles using a high-contrast accent color and `outline-offset` to ensure interactive elements remain distinctly visible during keyboard navigation.
