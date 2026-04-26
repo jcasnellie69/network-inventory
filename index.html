@@ -172,7 +172,14 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 4px;
-            margin: 0 2px
+            margin: 0 2px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #21262d;
+            border-color: #8b949e;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -284,6 +291,9 @@
         </thead>
         <tbody>
             <tr>
+                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;">
+                    Loading inventory data...
+                </td>
                 <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;" aria-live="polite">Loading network data...</td>
             </tr>
         </tbody>
@@ -320,7 +330,7 @@
                     { data: 'status', render: d => `<span class="status-${d}">${d}</span>` },
                     { data: 'priority', render: d => `<span class="priority-${d}">${d}</span>` }
                 ],
-                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", lengthMenu: "Show _MENU_" }
+                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search devices...", lengthMenu: "Show _MENU_" }
             });
 
             $.fn.dataTable.ext.search.push((s, row) => {

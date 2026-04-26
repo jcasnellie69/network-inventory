@@ -1,3 +1,6 @@
+## 2026-04-17 - DataTables Accessibility and Empty States
+**Learning:** Vanilla DataTables lacks some accessibility features by default, like visible keyboard focus (`focus-visible`) and distinct hover states on its generated pagination buttons. Also, since it renders asynchronously based on a JSON fetch, users see an awkward, completely empty table outline during loading.
+**Action:** Always add `*:focus-visible` generic styles if missing, explicit `cursor: pointer` + hover states to `.paginate_button`, and a hardcoded loading placeholder (`<td colspan="X">`) in the initial HTML `<tbody>` which DataTables will automatically overwrite once the data is loaded.
 ## 2026-04-14 - Empty Table Async Fetch
 **Learning:** Tables relying on asynchronous JS fetches (like DataTables loading via JSON) present an empty, unhelpful layout to users before the data loads. If the table layout has column headers but no body content, it is confusing and visually jarring when content suddenly pops in. Screen readers also encounter an empty table.
 **Action:** Always add a placeholder row with `colspan` equal to the number of columns and an `aria-live="polite"` region inside the `<tbody>` so users (both sighted and non-sighted) receive immediate feedback that data is loading.
