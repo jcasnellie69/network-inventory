@@ -1,3 +1,6 @@
+## 2026-04-22 - Explicit Focus Styles on Dark Themes
+**Learning:** Default browser focus rings (often blue or faint outlines) can become entirely invisible or provide insufficient contrast against dark backgrounds (like `#0d1117`), making keyboard navigation impossible.
+**Action:** Always explicitly define `:focus-visible` styles with a high-contrast outline (`outline: 2px solid var(--accent);`) and space it apart from the element (`outline-offset: 2px;`) to ensure interactive elements are clearly distinguishable for keyboard users.
 ## 2024-05-24 - High Contrast Focus on Dark Themes
 **Learning:** Default browser focus outlines are nearly invisible against very dark background colors (like `#0d1117`), making keyboard navigation extremely difficult for users relying on visual focus indicators.
 **Action:** Always implement explicit, high-contrast `:focus-visible` styles with appropriate `outline-offset` when working with dark-themed interfaces to ensure interactive elements are clearly discernible when focused via keyboard.
