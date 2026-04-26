@@ -212,6 +212,10 @@
             color: #8b949e
         }
 
+        /* Accessibility: Clear focus indicators */
+        select:focus-visible,
+        input:focus-visible,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
         /* Accessibility: High contrast focus visible for dark theme */
         select:focus-visible,
         input:focus-visible,
@@ -291,6 +295,9 @@
         </thead>
         <tbody>
             <tr>
+                <td colspan="9" style="text-align: center; padding: 30px; color: #8b949e;" aria-live="polite">
+                    ⏳ Loading network inventory data...
+                </td>
                 <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;">
                     Loading inventory data...
                 </td>
