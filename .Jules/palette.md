@@ -1,3 +1,6 @@
+## 2023-10-27 - High Contrast Focus States in Dark Themes
+**Learning:** Default browser focus rings fail WCAG contrast requirements when rendered against the very dark `#0d1117` background used in this UI, making keyboard navigation nearly invisible for many users.
+**Action:** Always define an explicit `:focus-visible` state using a high-contrast accent color (like `--accent`) and `outline-offset` to ensure interactive elements are clearly distinguishable during keyboard navigation.
 ## 2024-05-18 - Dark Theme Focus Rings and Async Tables
 **Learning:** Default browser focus rings often have insufficient contrast or disappear entirely against custom dark theme backgrounds (`#0d1117`). Additionally, vanilla DataTables initialized over an empty `<tbody>` while waiting for an asynchronous `fetch` leaves a jarring empty space without feedback for screen readers or visual users.
 **Action:** Always explicitly define `:focus-visible` styles (e.g., `outline: 2px solid var(--accent); outline-offset: 2px;`) for interactive elements in dark-themed applications. For tables relying on async data, always hardcode an initial loading row with `aria-live="polite"` before the JavaScript library takes over rendering.
