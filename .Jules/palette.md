@@ -1,3 +1,6 @@
+## 2024-05-24 - High Contrast Focus on Dark Themes
+**Learning:** Default browser focus outlines are nearly invisible against very dark background colors (like `#0d1117`), making keyboard navigation extremely difficult for users relying on visual focus indicators.
+**Action:** Always implement explicit, high-contrast `:focus-visible` styles with appropriate `outline-offset` when working with dark-themed interfaces to ensure interactive elements are clearly discernible when focused via keyboard.
 ## 2023-10-27 - High Contrast Focus States in Dark Themes
 **Learning:** Default browser focus rings fail WCAG contrast requirements when rendered against the very dark `#0d1117` background used in this UI, making keyboard navigation nearly invisible for many users.
 **Action:** Always define an explicit `:focus-visible` state using a high-contrast accent color (like `--accent`) and `outline-offset` to ensure interactive elements are clearly distinguishable during keyboard navigation.
