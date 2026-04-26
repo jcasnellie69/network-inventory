@@ -25,4 +25,6 @@
 
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
-**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.## 2024-03-20 - Clear Filters Expectation
+**Learning:** Users expect a 'Clear Filters' button to reset the entire table view, including any custom DataTables filters and the built-in global search field. Often, these are handled separately by libraries like DataTables, leading to a frustrating experience where 'Clear Filters' doesn't clear the search input or doesn't become visible when only searching.
+**Action:** When implementing custom 'Clear Filters' logic with DataTables, always bind to the `search.dt` event to toggle visibility, and explicitly call `table.search('').draw()` alongside resetting custom filter selects.
