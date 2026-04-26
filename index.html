@@ -22,6 +22,12 @@
             box-sizing: border-box
         }
 
+        /* Accessibility: Improve focus visibility on dark background */
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             background: var(--bg);
@@ -89,7 +95,19 @@
             border: 1px solid var(--border);
             border-radius: 6px;
             padding: 6px 10px;
-            min-width: 130px
+            min-width: 130px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .filters select:hover {
+            border-color: #8b949e;
+        }
+
+        .filters select:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
         }
 
         table.dataTable {
@@ -152,7 +170,24 @@
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: 4px;
-            padding: 5px
+            padding: 5px;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            cursor: pointer;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:hover,
+        .dataTables_wrapper .dataTables_length select:hover {
+            border-color: #8b949e;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus-visible,
+        .dataTables_wrapper .dataTables_length select:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
         }
 
         .dataTables_wrapper .dataTables_info,
@@ -166,7 +201,24 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 4px;
-            margin: 0 2px
+            margin: 0 2px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            border-color: #8b949e;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #21262d;
+            border-color: #8b949e;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -202,6 +254,32 @@
         select:focus-visible,
         input:focus-visible,
         .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+        /* Accessibility: High contrast focus visible styles for dark theme */
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        table.dataTable thead th:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: -2px; /* Inward offset for table headers */
+        }
+        /* Accessibility: Clear focus indicators */
+        select:focus-visible,
+        input:focus-visible,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+        /* Accessibility: High contrast focus visible for dark theme */
+        select:focus-visible,
+        input:focus-visible,
+        .paginate_button:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
@@ -210,7 +288,7 @@
 
 <body>
     <h1>🔌 Network Inventory Dashboard</h1>
-    <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated">-</span></p>
+    <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated" aria-live="polite">Loading...</span></p>
 
     <div class="summary-grid">
         <div class="card">
@@ -275,7 +353,17 @@
                 <th>Priority</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 30px; color: #8b949e;" aria-live="polite">
+                    ⏳ Loading network inventory data...
+                </td>
+                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;">
+                    Loading inventory data...
+                </td>
+                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;" aria-live="polite">Loading network data...</td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="insights">
@@ -309,7 +397,7 @@
                     { data: 'status', render: d => `<span class="status-${d}">${d}</span>` },
                     { data: 'priority', render: d => `<span class="priority-${d}">${d}</span>` }
                 ],
-                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", lengthMenu: "Show _MENU_" }
+                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search devices...", lengthMenu: "Show _MENU_" }
             });
 
             $.fn.dataTable.ext.search.push((s, row) => {
