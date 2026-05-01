@@ -426,21 +426,26 @@
 
             function updateClearFiltersBtn() {
                 const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
-                if (hasFilters) {
+                const hasSearch = table.search() !== '';
+                if (hasFilters || hasSearch) {
                     $('#clearFiltersBtn').show();
                 } else {
                     $('#clearFiltersBtn').hide();
                 }
             }
 
-            $('select').on('change', () => {
+            table.on('search.dt', () => {
+                updateClearFiltersBtn();
+            });
+
+            $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
             });
 
             $('#clearFiltersBtn').on('click', () => {
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
-                table.draw();
+                table.search('').draw();
                 updateClearFiltersBtn();
             });
         });
