@@ -1,450 +1,531 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Network Inventory - MOKERLINK Switch</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"
+    />
     <style>
-        :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --border: #30363d;
-            --text: #c9d1d9;
-            --accent: #58a6ff;
-            --green: #3fb950;
-            --yellow: #d29922;
-            --red: #f85149
-        }
+      :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --border: #30363d;
+        --text: #c9d1d9;
+        --accent: #58a6ff;
+        --green: #3fb950;
+        --yellow: #d29922;
+        --red: #f85149;
+      }
 
-        * {
-            box-sizing: border-box
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        /* Accessibility: Improve focus visibility on dark background */
-        *:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+      /* Accessibility: Improve focus visibility on dark background */
+      *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+      }
 
-        h1 {
-            color: var(--accent);
-            margin-bottom: 5px
-        }
+      h1 {
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
 
-        .subtitle {
-            color: #8b949e;
-            margin-bottom: 20px
-        }
+      .subtitle {
+        color: #8b949e;
+        margin-bottom: 20px;
+      }
 
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px
-        }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 25px;
+      }
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 14px
-        }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 14px;
+      }
 
-        .card h3 {
-            margin: 0 0 6px;
-            font-size: 11px;
-            color: #8b949e;
-            text-transform: uppercase
-        }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 11px;
+        color: #8b949e;
+        text-transform: uppercase;
+      }
 
-        .card .value {
-            font-size: 28px;
-            font-weight: 600
-        }
+      .card .value {
+        font-size: 28px;
+        font-weight: 600;
+      }
 
-        .filters {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 14px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center
-        }
+      .filters {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
 
-        .filters label {
-            font-size: 13px;
-            color: #8b949e
-        }
+      .filters label {
+        font-size: 13px;
+        color: #8b949e;
+      }
 
-        .filters select {
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 6px 10px;
-            min-width: 130px;
-            cursor: pointer;
-            transition: border-color 0.2s ease, outline 0.2s ease;
-        }
+      .filters select {
+        background: var(--bg);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        min-width: 130px;
+        cursor: pointer;
+        transition:
+          border-color 0.2s ease,
+          outline 0.2s ease;
+      }
 
-        .filters select:hover {
-            border-color: #8b949e;
-        }
+      .filters select:hover {
+        border-color: #8b949e;
+      }
 
-        .filters select:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-            border-color: var(--accent);
-        }
+      .filters select:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-color: var(--accent);
+      }
 
-        .clear-filters-btn {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 13px;
-            cursor: pointer;
-            margin-left: auto;
-            transition: all 0.2s ease;
-        }
+      .clear-filters-btn {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        margin-left: auto;
+        transition: all 0.2s ease;
+      }
 
-        .clear-filters-btn:hover {
-            background: var(--accent);
-            color: var(--bg);
-        }
+      .clear-filters-btn:hover {
+        background: var(--accent);
+        color: var(--bg);
+      }
 
-        table.dataTable {
-            background: var(--card);
-            border-collapse: collapse
-        }
+      table.dataTable {
+        background: var(--card);
+        border-collapse: collapse;
+      }
 
-        table.dataTable thead th {
-            background: #21262d;
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
-            padding: 10px;
-            text-align: left;
-            font-size: 12px
-        }
+      table.dataTable thead th {
+        background: #21262d;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+        text-align: left;
+        font-size: 12px;
+      }
 
-        table.dataTable tbody td {
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--border);
-            font-size: 13px
-        }
+      table.dataTable tbody td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
 
-        table.dataTable tbody tr:hover {
-            background: #21262d
-        }
+      table.dataTable tbody tr:hover {
+        background: #21262d;
+      }
 
-        .status-Active {
-            color: var(--green)
-        }
+      .status-Active {
+        color: var(--green);
+      }
 
-        .status-Idle {
-            color: var(--yellow)
-        }
+      .status-Idle {
+        color: var(--yellow);
+      }
 
-        .status-Inactive {
-            color: var(--red)
-        }
+      .status-Inactive {
+        color: var(--red);
+      }
 
-        .priority-Critical {
-            color: var(--red);
-            font-weight: 600
-        }
+      .priority-Critical {
+        color: var(--red);
+        font-weight: 600;
+      }
 
-        .priority-High {
-            color: #db6d28;
-            font-weight: 600
-        }
+      .priority-High {
+        color: #db6d28;
+        font-weight: 600;
+      }
 
-        .priority-Medium {
-            color: var(--yellow)
-        }
+      .priority-Medium {
+        color: var(--yellow);
+      }
 
-        .priority-Low {
-            color: #8b949e
-        }
+      .priority-Low {
+        color: #8b949e;
+      }
 
-        .dataTables_wrapper .dataTables_filter input,
-        .dataTables_wrapper .dataTables_length select {
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 5px;
-            transition: border-color 0.2s ease, outline 0.2s ease;
-        }
+      .dataTables_wrapper .dataTables_filter input,
+      .dataTables_wrapper .dataTables_length select {
+        background: var(--bg);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 5px;
+        transition:
+          border-color 0.2s ease,
+          outline 0.2s ease;
+      }
 
-        .dataTables_wrapper .dataTables_length select {
-            cursor: pointer;
-        }
+      .dataTables_wrapper .dataTables_length select {
+        cursor: pointer;
+      }
 
-        .dataTables_wrapper .dataTables_filter input:hover,
-        .dataTables_wrapper .dataTables_length select:hover {
-            border-color: #8b949e;
-        }
+      .dataTables_wrapper .dataTables_filter input:hover,
+      .dataTables_wrapper .dataTables_length select:hover {
+        border-color: #8b949e;
+      }
 
-        .dataTables_wrapper .dataTables_filter input:focus-visible,
-        .dataTables_wrapper .dataTables_length select:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-            border-color: var(--accent);
-        }
+      .dataTables_wrapper .dataTables_filter input:focus-visible,
+      .dataTables_wrapper .dataTables_length select:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-color: var(--accent);
+      }
 
-        .dataTables_wrapper .dataTables_info,
-        .dataTables_wrapper .dataTables_paginate {
-            color: #8b949e;
-            margin-top: 12px
-        }
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        color: #8b949e;
+        margin-top: 12px;
+      }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            color: var(--text) !important;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            margin: 0 2px;
-            cursor: pointer;
-            transition: border-color 0.2s ease, outline 0.2s ease;
-        }
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: var(--text) !important;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        margin: 0 2px;
+        cursor: pointer;
+        transition:
+          border-color 0.2s ease,
+          outline 0.2s ease;
+      }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            border-color: #8b949e;
-        }
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        border-color: #8b949e;
+      }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-            transition: background 0.2s, border-color 0.2s;
-        }
+      .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: #21262d;
-            border-color: #8b949e;
-        }
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #21262d;
+        border-color: #8b949e;
+      }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: var(--accent);
-            color: #fff !important;
-            border-color: var(--accent)
-        }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--accent);
+        color: #fff !important;
+        border-color: var(--accent);
+      }
 
-        .insights {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 25px
-        }
+      .insights {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px;
+        margin-top: 25px;
+      }
 
-        .insights h2 {
-            color: var(--accent);
-            margin: 0 0 12px;
-            font-size: 16px
-        }
+      .insights h2 {
+        color: var(--accent);
+        margin: 0 0 12px;
+        font-size: 16px;
+      }
 
-        .insights ul {
-            margin: 0;
-            padding-left: 20px
-        }
+      .insights ul {
+        margin: 0;
+        padding-left: 20px;
+      }
 
-        .insights li {
-            margin-bottom: 6px;
-            color: #8b949e
-        }
+      .insights li {
+        margin-bottom: 6px;
+        color: #8b949e;
+      }
 
-        select:focus-visible,
-        input:focus-visible,
-        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
-        /* Accessibility: High contrast focus visible styles for dark theme */
-        *:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-            border-radius: 2px;
-        }
+      /* Accessibility: High contrast focus visible styles for dark theme */
+      *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
 
-        input:focus-visible,
-        select:focus-visible,
-        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+      input:focus-visible,
+      select:focus-visible,
+      .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
 
-        table.dataTable thead th:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: -2px; /* Inward offset for table headers */
-        }
-        /* Accessibility: Clear focus indicators */
-        select:focus-visible,
-        input:focus-visible,
-        .dataTables_wrapper .dataTables_paginate .paginate_button:focus-visible {
-        /* Accessibility: High contrast focus visible for dark theme */
-        select:focus-visible,
-        input:focus-visible,
-        .paginate_button:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+      table.dataTable thead th:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px; /* Inward offset for table headers */
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>🔌 Network Inventory Dashboard</h1>
-    <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated" aria-live="polite">Loading...</span></p>
+    <p class="subtitle">
+      MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated:
+      <span id="generated" aria-live="polite">Loading...</span>
+    </p>
 
     <div class="summary-grid">
-        <div class="card">
-            <h3>Total Devices</h3>
-            <div class="value" id="totalDevices">-</div>
-        </div>
-        <div class="card">
-            <h3>Active</h3>
-            <div class="value status-Active" id="activeCount">-</div>
-        </div>
-        <div class="card">
-            <h3>Idle</h3>
-            <div class="value status-Idle" id="idleCount">-</div>
-        </div>
-        <div class="card">
-            <h3>Inactive</h3>
-            <div class="value status-Inactive" id="inactiveCount">-</div>
-        </div>
-        <div class="card">
-            <h3>Critical</h3>
-            <div class="value priority-Critical" id="criticalCount">-</div>
-        </div>
-        <div class="card">
-            <h3>High</h3>
-            <div class="value priority-High" id="highCount">-</div>
-        </div>
+      <div class="card">
+        <h3>Total Devices</h3>
+        <div class="value" id="totalDevices">-</div>
+      </div>
+      <div class="card">
+        <h3>Active</h3>
+        <div class="value status-Active" id="activeCount">-</div>
+      </div>
+      <div class="card">
+        <h3>Idle</h3>
+        <div class="value status-Idle" id="idleCount">-</div>
+      </div>
+      <div class="card">
+        <h3>Inactive</h3>
+        <div class="value status-Inactive" id="inactiveCount">-</div>
+      </div>
+      <div class="card">
+        <h3>Critical</h3>
+        <div class="value priority-Critical" id="criticalCount">-</div>
+      </div>
+      <div class="card">
+        <h3>High</h3>
+        <div class="value priority-High" id="highCount">-</div>
+      </div>
     </div>
 
     <div class="filters">
-        <label>Status: <select id="filterStatus">
-                <option value="">All</option>
-                <option>Active</option>
-                <option>Idle</option>
-                <option>Inactive</option>
-            </select></label>
-        <label>Priority: <select id="filterPriority">
-                <option value="">All</option>
-                <option>Critical</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-            </select></label>
-        <label>Port: <select id="filterPort">
-                <option value="">All Ports</option>
-            </select></label>
-        <label>Category: <select id="filterCategory">
-                <option value="">All Categories</option>
-            </select></label>
-        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters">Clear Filters</button>
+      <label
+        >Status:
+        <select id="filterStatus">
+          <option value="">All</option>
+          <option>Active</option>
+          <option>Idle</option>
+          <option>Inactive</option>
+        </select></label
+      >
+      <label
+        >Priority:
+        <select id="filterPriority">
+          <option value="">All</option>
+          <option>Critical</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select></label
+      >
+      <label
+        >Port:
+        <select id="filterPort">
+          <option value="">All Ports</option>
+        </select></label
+      >
+      <label
+        >Category:
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+        </select></label
+      >
+      <button
+        id="clearFiltersBtn"
+        class="clear-filters-btn"
+        style="display: none"
+        aria-label="Clear all filters"
+      >
+        Clear Filters
+      </button>
     </div>
 
-    <table id="inventoryTable" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>IP Address</th>
-                <th>Hostname</th>
-                <th>Vendor</th>
-                <th>Switch Port</th>
-                <th>DNS Queries</th>
-                <th>Last Seen</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Priority</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="9" style="text-align: center; padding: 30px; color: #8b949e;" aria-live="polite">
-                    ⏳ Loading network inventory data...
-                </td>
-                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;">
-                    Loading inventory data...
-                </td>
-                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;" aria-live="polite">Loading network data...</td>
-            </tr>
-        </tbody>
+    <table id="inventoryTable" class="display" style="width: 100%">
+      <thead>
+        <tr>
+          <th>IP Address</th>
+          <th>Hostname</th>
+          <th>Vendor</th>
+          <th>Switch Port</th>
+          <th>DNS Queries</th>
+          <th>Last Seen</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            colspan="9"
+            style="text-align: center; padding: 30px; color: #8b949e"
+            aria-live="polite"
+          >
+            ⏳ Loading network inventory data...
+          </td>
+        </tr>
+      </tbody>
     </table>
 
     <div class="insights">
-        <h2>💡 Key Insights</h2>
-        <ul id="insightsList"></ul>
+      <h2>💡 Key Insights</h2>
+      <ul id="insightsList"></ul>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script>
-        fetch('network-inventory.json').then(r => r.json()).then(data => {
-            $('#generated').text(data.metadata.generated);
-            $('#totalDevices').text(data.metadata.totalDevices);
-            $('#activeCount').text(data.summary.status.find(s => s.status === 'Active')?.count || 0);
-            $('#idleCount').text(data.summary.status.find(s => s.status === 'Idle')?.count || 0);
-            $('#inactiveCount').text(data.summary.status.find(s => s.status === 'Inactive')?.count || 0);
-            $('#criticalCount').text(data.summary.priority.find(p => p.priority === 'Critical')?.count || 0);
-            $('#highCount').text(data.summary.priority.find(p => p.priority === 'High')?.count || 0);
+      fetch("network-inventory.json")
+        .then((r) => r.json())
+        .then((data) => {
+          $("#generated").text(data.metadata.generated);
+          $("#totalDevices").text(data.metadata.totalDevices);
+          $("#activeCount").text(
+            data.summary.status.find((s) => s.status === "Active")?.count || 0,
+          );
+          $("#idleCount").text(
+            data.summary.status.find((s) => s.status === "Idle")?.count || 0,
+          );
+          $("#inactiveCount").text(
+            data.summary.status.find((s) => s.status === "Inactive")?.count ||
+              0,
+          );
+          $("#criticalCount").text(
+            data.summary.priority.find((p) => p.priority === "Critical")
+              ?.count || 0,
+          );
+          $("#highCount").text(
+            data.summary.priority.find((p) => p.priority === "High")?.count ||
+              0,
+          );
 
-            const ports = [...new Set(data.devices.map(d => d.switchPort))].sort();
-            const categories = [...new Set(data.devices.map(d => d.category))].sort();
-            ports.forEach(p => $('#filterPort').append(`<option>${p}</option>`));
-            categories.forEach(c => $('#filterCategory').append(`<option>${c}</option>`));
-            data.insights.forEach(i => $('#insightsList').append(`<li>${i}</li>`));
+          const ports = [
+            ...new Set(data.devices.map((d) => d.switchPort)),
+          ].sort();
+          const categories = [
+            ...new Set(data.devices.map((d) => d.category)),
+          ].sort();
+          ports.forEach((p) =>
+            $("#filterPort").append(`<option>${p}</option>`),
+          );
+          categories.forEach((c) =>
+            $("#filterCategory").append(`<option>${c}</option>`),
+          );
+          data.insights.forEach((i) =>
+            $("#insightsList").append(`<li>${i}</li>`),
+          );
 
-            const table = $('#inventoryTable').DataTable({
-                data: data.devices,
-                columns: [
-                    { data: 'ip' }, { data: 'hostname' }, { data: 'vendor' }, { data: 'switchPort' },
-                    { data: 'dnsQueries', render: d => d.toLocaleString() }, { data: 'lastSeen' }, { data: 'category' },
-                    { data: 'status', render: d => `<span class="status-${d}">${d}</span>` },
-                    { data: 'priority', render: d => `<span class="priority-${d}">${d}</span>` }
-                ],
-                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search devices...", lengthMenu: "Show _MENU_" }
-            });
+          const table = $("#inventoryTable").DataTable({
+            data: data.devices,
+            columns: [
+              { data: "ip" },
+              { data: "hostname" },
+              { data: "vendor" },
+              { data: "switchPort" },
+              { data: "dnsQueries", render: (d) => d.toLocaleString() },
+              { data: "lastSeen" },
+              { data: "category" },
+              {
+                data: "status",
+                render: (d) => `<span class="status-${d}">${d}</span>`,
+              },
+              {
+                data: "priority",
+                render: (d) => `<span class="priority-${d}">${d}</span>`,
+              },
+            ],
+            order: [[4, "desc"]],
+            pageLength: 25,
+            language: {
+              search: "Search:",
+              searchPlaceholder: "Search devices...",
+              lengthMenu: "Show _MENU_",
+            },
+          });
 
-            $.fn.dataTable.ext.search.push((s, row) => {
-                const st = $('#filterStatus').val(), pr = $('#filterPriority').val(), po = $('#filterPort').val(), ca = $('#filterCategory').val();
-                if (st && !row[7].includes(st)) return false; if (pr && !row[8].includes(pr)) return false;
-                if (po && row[3] !== po) return false; if (ca && row[6] !== ca) return false; return true;
-            });
+          $.fn.dataTable.ext.search.push((s, row) => {
+            const st = $("#filterStatus").val(),
+              pr = $("#filterPriority").val(),
+              po = $("#filterPort").val(),
+              ca = $("#filterCategory").val();
+            if (st && !row[7].includes(st)) return false;
+            if (pr && !row[8].includes(pr)) return false;
+            if (po && row[3] !== po) return false;
+            if (ca && row[6] !== ca) return false;
+            return true;
+          });
 
-            function updateClearFiltersBtn() {
-                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
-                if (hasFilters) {
-                    $('#clearFiltersBtn').show();
-                } else {
-                    $('#clearFiltersBtn').hide();
-                }
+          function updateClearFiltersBtn() {
+            const hasFilters =
+              $("#filterStatus").val() ||
+              $("#filterPriority").val() ||
+              $("#filterPort").val() ||
+              $("#filterCategory").val() ||
+              table.search();
+            if (hasFilters) {
+              $("#clearFiltersBtn").show();
+            } else {
+              $("#clearFiltersBtn").hide();
             }
+          }
 
-            $('select').on('change', () => {
-                table.draw();
-                updateClearFiltersBtn();
-            });
+          $("#filterStatus, #filterPriority, #filterPort, #filterCategory").on(
+            "change",
+            () => {
+              table.draw();
+              updateClearFiltersBtn();
+            },
+          );
 
-            $('#clearFiltersBtn').on('click', () => {
-                $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
-                table.draw();
-                updateClearFiltersBtn();
-            });
+          table.on("search.dt", () => {
+            updateClearFiltersBtn();
+          });
+
+          $("#clearFiltersBtn").on("click", () => {
+            $(
+              "#filterStatus, #filterPriority, #filterPort, #filterCategory",
+            ).val("");
+            table.search("").draw();
+            updateClearFiltersBtn();
+          });
         });
     </script>
-</body>
-
+  </body>
 </html>
