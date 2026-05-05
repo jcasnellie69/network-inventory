@@ -376,10 +376,6 @@
                 <td colspan="9" style="text-align: center; padding: 30px; color: #8b949e;" aria-live="polite">
                     ⏳ Loading network inventory data...
                 </td>
-                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;">
-                    Loading inventory data...
-                </td>
-                <td colspan="9" style="text-align: center; padding: 20px; color: #8b949e;" aria-live="polite">Loading network data...</td>
             </tr>
         </tbody>
     </table>
@@ -425,7 +421,7 @@
             });
 
             function updateClearFiltersBtn() {
-                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
+                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search() !== '';
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
                 } else {
@@ -433,13 +429,16 @@
                 }
             }
 
-            $('select').on('change', () => {
+            $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
             });
 
+            table.on('search.dt', updateClearFiltersBtn);
+
             $('#clearFiltersBtn').on('click', () => {
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
+                table.search('');
                 table.draw();
                 updateClearFiltersBtn();
             });
