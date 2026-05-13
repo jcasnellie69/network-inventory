@@ -25,4 +25,6 @@
 
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
-**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.## 2026-05-13 - DataTables and Custom UI Synchronization
+**Learning:** When using third-party libraries that inject their own UI controls (like DataTables length menu or search), binding generic selectors like `$('select').on('change')` can lead to unexpected interactions between the custom UI logic and the library's UI. Also, custom global clear buttons need to explicitly hook into the library's state (e.g., `table.search('').draw()` and `table.on('search.dt')`) to remain synchronized.
+**Action:** When implementing custom controls alongside a library like DataTables, always bind specifically by ID/Class rather than tag name, and hook into the library's custom events to track its internal state.
