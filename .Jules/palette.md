@@ -26,3 +26,6 @@
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
 **Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+## 2026-04-24 - DataTables Search Integration and Selectors
+**Learning:** When using custom filter dropdowns alongside jQuery DataTables, using broad event listeners like `$('select').on('change')` is risky because DataTables injects its own `<select>` elements (e.g., the "Length Menu"). Furthermore, a "Clear Filters" button must actively bind to the `search.dt` event to detect user typing in the global search box, not just dropdown changes.
+**Action:** Always use specific IDs or classes (e.g., `$('#filter1, #filter2')`) for custom filter listeners. When implementing a "Clear Filters" feature with DataTables, always check `table.search()` and bind to `table.on('search.dt')` to ensure the global search state accurately controls the "Clear" button's visibility, and clear it using `table.search('').draw()`.
