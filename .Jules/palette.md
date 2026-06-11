@@ -26,3 +26,6 @@
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
 **Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+## 2026-06-11 - Adding keyboard shortcuts to data tables
+**Learning:** For data-heavy applications, giving users keyboard shortcuts (like '/' for search) significantly speeds up their workflow. It's crucial to make these shortcuts discoverable (e.g., in placeholders) and to ensure they don't trigger when the user is already focused on an input element.
+**Action:** When implementing global keyboard shortcuts, always include a target check (like `!$(e.target).is('input, textarea, select')`) to prevent the shortcut from inadvertently triggering while the user is actively typing in form fields, and always include a visual hint.
