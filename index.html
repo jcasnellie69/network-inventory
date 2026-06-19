@@ -415,7 +415,7 @@
                     { data: 'status', render: d => `<span class="status-${d}">${d}</span>` },
                     { data: 'priority', render: d => `<span class="priority-${d}">${d}</span>` }
                 ],
-                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search devices...", lengthMenu: "Show _MENU_" }
+                order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search (Press '/')...", lengthMenu: "Show _MENU_" }
             });
 
             $.fn.dataTable.ext.search.push((s, row) => {
@@ -442,6 +442,13 @@
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.draw();
                 updateClearFiltersBtn();
+            });
+
+            $(document).on('keydown', (e) => {
+                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
+                    e.preventDefault();
+                    $('input[type=search]').focus();
+                }
             });
         });
     </script>
