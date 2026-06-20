@@ -25,4 +25,6 @@
 
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
-**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+**Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.## 2026-06-20 - DataTables Search UX & Dark Theme Focus
+**Learning:** DataTables length menu '\<select\>' elements can conflict with custom jQuery event listeners (e.g., '$('select').on('change')') designed for standalone filter dropdowns. Also, dark themes require explicit high-contrast ':focus-visible' outlines, but globally applying it via '\*:focus-visible' can cause syntax issues or override element-specific tweaks.
+**Action:** Always scope generic element selectors (like 'select') to their specific container or ID when augmenting DataTables functionality to prevent side effects. When defining focus states, target specific input types explicitly rather than using error-prone global wildcards.
