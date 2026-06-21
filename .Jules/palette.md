@@ -26,3 +26,6 @@
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
 **Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+## 2026-06-21 - Keyboard Shortcut Discoverability & Duplicate Selectors
+**Learning:** Adding global keyboard shortcuts (like '/' for search) requires in-place discoverability to be effective; placing the hint directly in the `searchPlaceholder` provides excellent visibility without clutter. Also, malformed or duplicate component-specific CSS selectors (e.g., repeating `:focus-visible` rules) can break accessibility compliance or override intended dark-mode contrast if not carefully consolidated.
+**Action:** Always verify the visual and DOM impact of CSS simplifications to avoid accidentally purging specific focus states, and embed keyboard hints directly in their associated input placeholders where possible.
