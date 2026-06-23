@@ -26,3 +26,6 @@
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
 **Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+## 2026-04-24 - Global Keyboard Shortcuts & DataTables Search Sync
+**Learning:** Adding a global keyboard shortcut (like '/') for search vastly improves power-user navigation, but its discoverability is zero unless hinted in the placeholder. Furthermore, custom filter reset logic must tie into DataTables' internal events (`search.dt`) to correctly handle and reset global search states alongside custom dropdowns.
+**Action:** When adding global focus shortcuts, explicitly update the input placeholder to include the shortcut hint (e.g., `Search (Press '/')...`). When implementing custom clear buttons with DataTables, bind visibility logic to `table.on('search.dt')` and clear global searches using `table.search('').draw()`.
