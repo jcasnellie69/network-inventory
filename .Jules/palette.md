@@ -26,3 +26,6 @@
 ## 2026-04-24 - Contextual Filter Resets
 **Learning:** In dashboards with multiple dropdown filters, users often get stuck in narrow filtered states and have to manually clear each one. A global "Clear Filters" button that only appears when filters are active significantly reduces friction.
 **Action:** Implement contextual reset mechanisms for multi-axis filtering, showing a button to bulk-clear filters only when at least one filter is active to keep the UI clean by default.
+## 2026-04-25 - Global Search Keyboard Shortcuts
+**Learning:** Adding a keyboard shortcut (like `/`) to focus a search input greatly improves navigation speed for power users, but it is entirely invisible if not communicated.
+**Action:** Always implement a global `keydown` listener for shortcuts (ensuring it ignores events when the user is already typing in an input) and update the search input's placeholder to explicitly advertise the shortcut (e.g., "Search (Press '/')...") to improve discoverability without cluttering the UI.
