@@ -394,13 +394,6 @@
                 order: [[4, 'desc']], pageLength: 25, language: { search: "Search:", searchPlaceholder: "Search (Press '/')...", lengthMenu: "Show _MENU_" }
             });
 
-            $(document).on('keydown', (e) => {
-                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
-                    e.preventDefault();
-                    $('.dataTables_filter input').focus();
-                }
-            });
-
             $.fn.dataTable.ext.search.push((s, row) => {
                 const st = $('#filterStatus').val(), pr = $('#filterPriority').val(), po = $('#filterPort').val(), ca = $('#filterCategory').val();
                 if (st && !row[7].includes(st)) return false; if (pr && !row[8].includes(pr)) return false;
@@ -408,7 +401,7 @@
             });
 
             function updateClearFiltersBtn() {
-                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
+                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search();
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
                 } else {
@@ -416,15 +409,27 @@
                 }
             }
 
-            $('select').on('change', () => {
+            // Bind to table search event as well to trigger Clear Filters button visibility
+            table.on('search.dt', updateClearFiltersBtn);
+
+            // Avoid selecting DataTables generated selects (like length menu)
+            $('.filters select').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
             });
 
             $('#clearFiltersBtn').on('click', () => {
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
-                table.draw();
+                table.search('').draw();
                 updateClearFiltersBtn();
+            });
+
+            // Global keyboard shortcut for search
+            $(document).on('keydown', (e) => {
+                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
+                    e.preventDefault();
+                    $('input[type="search"]').focus();
+                }
             });
         });
     </script>
