@@ -29,3 +29,7 @@
 ## 2024-05-30 - Global Search Shortcut with DataTables
 **Learning:** Adding a global keyboard shortcut (like '/') to quickly focus a search field is a common power-user pattern. However, when paired with DataTables and custom filter logic (like a contextual "Clear Filters" button), the custom logic must explicitly listen to the DataTables `search.dt` event to stay in sync with the search state, rather than just dropdown changes.
 **Action:** When adding global search shortcuts, ensure the visual hint is added directly to the placeholder (e.g., `Search (Press '/')...`) for discoverability. Always bind custom 'Clear Filters' logic to the `search.dt` event to accurately reflect the global search state, and explicitly reset it using `table.search('').draw()`. Also avoid broad `$('select')` bindings, as DataTables injects its own dynamic selects (like the length menu).
+
+## 2026-04-24 - Keyboard Shortcut Discoverability
+**Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
+**Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.

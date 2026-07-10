@@ -31,7 +31,7 @@ This dashboard correlates switch port data with Pi-hole DNS query logs to provid
 
 This dashboard is hosted via **GitHub Pages**:
 
-👉 **[View Live Dashboard](https://jcasnellie.github.io/network-inventory/)**
+👉 **[View Live Dashboard](https://jcasnellie69.github.io/network-inventory/)**
 
 To run locally, simply open `index.html` in any modern web browser — no build step required.
 
