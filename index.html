@@ -437,7 +437,7 @@
             table.on('search.dt', updateClearFiltersBtn);
 
             // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
+            $('.filters-container select').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
             });
