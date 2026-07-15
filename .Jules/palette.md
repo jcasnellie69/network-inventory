@@ -29,3 +29,7 @@
 ## 2026-04-24 - Keyboard Shortcut Discoverability
 **Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
 **Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
+
+## 2026-07-15 - DataTables Custom Filter Resets
+**Learning:** When implementing custom 'Clear Filters' logic alongside jQuery DataTables, focusing solely on custom input components ignores the global search state. Furthermore, using broad element selectors (like `$('select')`) will inadvertently attach event listeners to DataTables' own dynamically generated elements (such as the pagination length dropdown).
+**Action:** Always bind to the `search.dt` event to keep custom filter UI in sync with global search state. Explicitly reset the table search via `table.search('').draw()` and strictly use specific IDs or classes (e.g., `$('#filterStatus, #filterPriority')`) to avoid side effects on DataTables' internal controls.
