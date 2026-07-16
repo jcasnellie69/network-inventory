@@ -29,3 +29,7 @@
 ## 2026-04-24 - Keyboard Shortcut Discoverability
 **Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
 **Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
+
+## 2026-04-24 - Synchronizing Library and Custom Filters
+**Learning:** When implementing custom "Clear Filters" logic alongside a third-party library (like DataTables), developers often forget to sync the library's built-in states (like global search). This leaves the UI in a confusing state where the "Clear Filters" button disappears, but a global search filter remains active.
+**Action:** Always bind to the library's native events (e.g., `search.dt`) to accurately reflect the global state, and explicitly reset all internal states (e.g., `table.search('').draw()`) alongside custom dropdown filters.
