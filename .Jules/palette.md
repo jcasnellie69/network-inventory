@@ -29,3 +29,7 @@
 ## 2026-04-24 - Keyboard Shortcut Discoverability
 **Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
 **Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
+
+## 2026-04-24 - Global Search in Filter Reset
+**Learning:** When custom dropdown filters and a global search input exist together, an overarching "Clear Filters" button is incomplete if it doesn't also clear the search term. Users expect a total reset of the table's state.
+**Action:** Always bind the clear button visibility logic to the DataTables `search.dt` event and ensure the clear action resets `table.search('')` in addition to clearing custom `<select>` elements.
