@@ -29,3 +29,7 @@
 ## 2026-04-24 - Keyboard Shortcut Discoverability
 **Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
 **Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
+
+## 2026-04-24 - DataTables Component Selectors and State
+**Learning:** When modifying UI elements alongside DataTables, broad selectors like `$('select')` accidentally capture library-injected controls (like the page length menu). Additionally, custom filter reset logic often forgets to track and reset the global search state (`table.search()`).
+**Action:** Always use specific IDs or classes for custom dropdowns. When implementing custom "Clear Filters" logic, explicitly check and reset `table.search()` and bind to the `search.dt` event.
