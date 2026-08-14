@@ -408,13 +408,15 @@
             });
 
             function updateClearFiltersBtn() {
-                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
+                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search();
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
                 } else {
                     $('#clearFiltersBtn').hide();
                 }
             }
+
+            table.on('search.dt', updateClearFiltersBtn);
 
             $('select').on('change', () => {
                 table.draw();
@@ -423,7 +425,7 @@
 
             $('#clearFiltersBtn').on('click', () => {
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
-                table.draw();
+                table.search('').draw();
                 updateClearFiltersBtn();
             });
         });
