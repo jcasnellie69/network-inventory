@@ -399,8 +399,10 @@
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
-                if (e.key === 'Escape' && $('#clearFiltersBtn').is(':visible') && !$(e.target).is('input, textarea, select')) {
-                    const clearButton = $('#clearFiltersBtn');
+                const clearButton = $('#clearFiltersBtn');
+                const isInteractiveTarget = $(e.target).closest('a, button, input, textarea, select, summary, [contenteditable], [role="button"], [role="link"], [role="textbox"], [role="combobox"]').length > 0;
+
+                if (e.key === 'Escape' && clearButton.is(':visible') && (!isInteractiveTarget || e.target === clearButton[0])) {
                     const restoreFocusToSearch = e.target === clearButton[0];
 
                     e.preventDefault();
