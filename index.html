@@ -399,7 +399,7 @@
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
-                if (e.key === 'Escape' && $('#clearFiltersBtn').is(':visible')) {
+                if (e.key === 'Escape' && $('#clearFiltersBtn').is(':visible') && !$(e.target).is('input, textarea, select')) {
                     const clearButton = $('#clearFiltersBtn');
                     const restoreFocusToSearch = e.target === clearButton[0];
 
