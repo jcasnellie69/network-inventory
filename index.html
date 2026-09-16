@@ -334,7 +334,7 @@
         <label>Category: <select id="filterCategory">
                 <option value="">All Categories</option>
             </select></label>
-        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters">Clear Filters</button>
+        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters (Escape)" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
     </div>
 
     <table id="inventoryTable" class="display" style="width:100%">
@@ -399,6 +399,17 @@
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
+                if (e.key === 'Escape' && $('#clearFiltersBtn').is(':visible')) {
+                    const clearButton = $('#clearFiltersBtn');
+                    const restoreFocusToSearch = e.target === clearButton[0];
+
+                    e.preventDefault();
+                    clearButton.click();
+
+                    if (restoreFocusToSearch) {
+                        $('.dataTables_filter input').focus();
+                    }
+                }
             });
 
             $.fn.dataTable.ext.search.push((s, row) => {
@@ -408,7 +419,7 @@
             });
 
             function updateClearFiltersBtn() {
-                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search();
+                const hasFilters = table.search() || $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
                 } else {
