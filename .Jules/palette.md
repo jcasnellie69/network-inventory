@@ -33,3 +33,7 @@
 ## 2026-04-24 - DataTables Search and Custom Clear Filters
 **Learning:** When building custom "Clear Filters" mechanisms alongside DataTables, relying only on custom dropdown changes will disconnect the clear button from the built-in search input. DataTables generates its own `search` state and length dropdowns which interfere with generic `$('select')` listeners.
 **Action:** Always bind clear filter logic to the `search.dt` event to accurately reflect the global search state, explicitly use `table.search('').draw()` to clear it, and target only specific custom filter IDs to avoid conflicts with DataTables' injected controls.
+
+## 2026-04-24 - Escape Shortcut for Contextual Resets
+**Learning:** For contextual actions like a "Clear Filters" button that only appears when needed, users often rely on the keyboard to exit or reset states. Providing an 'Escape' shortcut makes this action intuitive and fast.
+**Action:** Bind the `Escape` key to trigger temporary contextual resets, ensure it explicitly avoids interfering with native behaviors (like `select` dropdowns), call `.blur()` to drop active focus, and append an explicit visual hint `(Esc)` to the button text.
