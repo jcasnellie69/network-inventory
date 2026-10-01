@@ -34,6 +34,6 @@
 **Learning:** When building custom "Clear Filters" mechanisms alongside DataTables, relying only on custom dropdown changes will disconnect the clear button from the built-in search input. DataTables generates its own `search` state and length dropdowns which interfere with generic `$('select')` listeners.
 **Action:** Always bind clear filter logic to the `search.dt` event to accurately reflect the global search state, explicitly use `table.search('').draw()` to clear it, and target only specific custom filter IDs to avoid conflicts with DataTables' injected controls.
 
-## 2026-04-24 - Escape Key for Contextual Filter Resets
-**Learning:** Contextual reset actions (like a "Clear Filters" button) can be significantly improved by binding a global reset shortcut (like the `Escape` key), provided the action provides explicit visual hints directly on the button text (e.g., `Clear Filters (Esc)`). This caters well to keyboard power-users without cluttering the UI.
-**Action:** Implement a global `Escape` keyboard event listener to trigger UI state resets. Ensure it explicitly ignores components where `Escape` has a native behavior (e.g., `!$(e.target).is('select')`) and forcefully calls `blur()` on the event target to prevent active elements from continuing to capture subsequent interactions.
+## 2026-04-24 - Escape Shortcut for Contextual Reset
+**Learning:** Contextual reset actions can be improved by binding the `Escape` key to restore the default state, with a visible shortcut hint such as `Clear Filters (Esc)`.
+**Action:** Bind `Escape` to trigger the reset and expose the shortcut with `aria-keyshortcuts="Escape"`. Ignore elements where Escape has native behavior (e.g., `select`), and move focus to a stable visible control if the reset hides the focused element.
