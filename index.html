@@ -401,7 +401,7 @@
                 }
                 if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
                     $('#clearFiltersBtn').click();
-                    if ($(e.target).is('#clearFiltersBtn')) $('#filterStatus').focus();
+                    $('#filterStatus').focus();
                 }
             });
 
