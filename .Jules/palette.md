@@ -37,3 +37,7 @@
 ## 2026-04-24 - Escape Key for Contextual Filter Resets
 **Learning:** Contextual reset actions (like a "Clear Filters" button) can be significantly improved by binding a global reset shortcut (like the `Escape` key), provided the action provides explicit visual hints directly on the button text (e.g., `Clear Filters (Esc)`). This caters well to keyboard power-users without cluttering the UI.
 **Action:** Implement a global `Escape` keyboard event listener to trigger UI state resets. Ensure it explicitly ignores components where `Escape` has a native behavior (e.g., `!$(e.target).is('select')`) and forcefully calls `blur()` on the event target to prevent active elements from continuing to capture subsequent interactions.
+
+## 2026-04-24 - Managing Focus on Element Hiding and Global Resets
+**Learning:** When a UI element hides itself (like a "Clear Filters" button that disappears when state is empty), any keyboard focus it holds is dropped entirely to the `<body>`. This forces keyboard and screen reader users to navigate from the top of the document again. Additionally, global reset shortcuts (like Escape) can also strand focus if not carefully managed.
+**Action:** When an element hides itself upon activation, or when global UI state is reset, programmatically move focus (`.focus()`) to a logical, stable interactive element nearby (like the main filter dropdown) to maintain the user's context in the page.
