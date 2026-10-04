@@ -401,7 +401,7 @@
                 }
                 if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
                     $('#clearFiltersBtn').click();
-                    if ($(e.target).is('#clearFiltersBtn')) $('#filterStatus').focus();
+                    $('#filterStatus').focus();
                 }
             });
 
@@ -427,10 +427,14 @@
                 updateClearFiltersBtn();
             });
 
-            $('#clearFiltersBtn').on('click', () => {
+            $('#clearFiltersBtn').on('click', function(e) {
+                const wasActive = document.activeElement === this;
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
+                if (wasActive) {
+                    $('#filterStatus').focus();
+                }
             });
         });
     </script>
