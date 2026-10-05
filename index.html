@@ -400,8 +400,8 @@
                     $('.dataTables_filter input').focus();
                 }
                 if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
+                    e.preventDefault();
                     $('#clearFiltersBtn').click();
-                    if ($(e.target).is('#clearFiltersBtn')) $('#filterStatus').focus();
                 }
             });
 
@@ -431,6 +431,7 @@
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
+                $('#filterStatus').focus();
             });
         });
     </script>
