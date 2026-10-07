@@ -401,7 +401,6 @@
                 }
                 if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
                     $('#clearFiltersBtn').click();
-                    if ($(e.target).is('#clearFiltersBtn')) $('#filterStatus').focus();
                 }
             });
 
@@ -431,6 +430,9 @@
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
+                if (document.activeElement === document.body || $(document.activeElement).is('#clearFiltersBtn')) {
+                    $('#filterStatus').focus();
+                }
             });
         });
     </script>
