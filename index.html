@@ -335,6 +335,7 @@
                 <option value="">All Categories</option>
             </select></label>
         <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters (Escape)" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
+        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
     </div>
 
     <table id="inventoryTable" class="display" style="width:100%">
@@ -403,6 +404,8 @@
                     e.preventDefault();
                     $('#clearFiltersBtn').click();
                     $(e.target).blur();
+                if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
+                    $('#clearFiltersBtn').click();
                 }
             });
 
@@ -432,6 +435,7 @@
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
+                $('#filterStatus').focus();
             });
         });
     </script>
