@@ -30,6 +30,13 @@
 **Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
 **Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
 
+## 2026-04-24 - DataTables Search and Clear Filters
+**Learning:** When implementing custom "Clear Filters" logic alongside DataTables, users expect the button to clear the global search text box as well as custom dropdowns.
+**Action:** Always bind the visibility logic to `table.on('search.dt')` and explicitly clear the search via `table.search('').draw()` to keep the custom filters and DataTables built-in controls synced.
+
+## 2026-04-24 - DataTables Broad Selector Conflicts
+**Learning:** DataTables dynamically injects its own controls (like the length menu `<select>`). Binding a global `$('select').on('change')` to trigger table redraws causes unintended side effects with these built-in controls.
+**Action:** Always use specific class or ID selectors (e.g., `$('.filters select')`) when binding custom events to avoid conflicting with elements injected by third-party libraries.
 ## 2026-04-24 - DataTables Search and Custom Clear Filters
 **Learning:** When building custom "Clear Filters" mechanisms alongside DataTables, relying only on custom dropdown changes will disconnect the clear button from the built-in search input. DataTables generates its own `search` state and length dropdowns which interfere with generic `$('select')` listeners.
 **Action:** Always bind clear filter logic to the `search.dt` event to accurately reflect the global search state, explicitly use `table.search('').draw()` to clear it, and target only specific custom filter IDs to avoid conflicts with DataTables' injected controls.
