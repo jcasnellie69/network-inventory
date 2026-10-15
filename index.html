@@ -419,10 +419,15 @@
                 }
             }
 
+            $('.filters select').on('change', () => {
             table.on('search.dt', updateClearFiltersBtn);
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
+                updateClearFiltersBtn();
+            });
+
+            table.on('search.dt', () => {
                 updateClearFiltersBtn();
             });
 
