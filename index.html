@@ -401,9 +401,14 @@
             });
 
             $(document).on('keydown', (e) => {
-                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
-                    e.preventDefault();
-                    $('.dataTables_filter input').focus();
+                const isTypingContext = $(e.target).is('input, textarea, select, [contenteditable="true"]');
+                const hasModifier = e.ctrlKey || e.metaKey || e.altKey;
+                if (!hasModifier && e.key === '/' && !isTypingContext) {
+                    const $search = $('.dataTables_filter input');
+                    if ($search.length) {
+                        e.preventDefault();
+                        $search.focus();
+                    }
                 }
             });
 
