@@ -419,6 +419,11 @@
                 }
             }
 
+            // Bind to table search event as well to trigger Clear Filters button visibility
+            table.on('search.dt', updateClearFiltersBtn);
+
+            // Avoid selecting DataTables generated selects (like length menu)
+            $('.filters select').on('change', () => {
             table.on('search.dt', updateClearFiltersBtn);
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
@@ -431,6 +436,14 @@
                 table.search('').draw();
                 updateClearFiltersBtn();
                 $('#filterStatus').focus();
+            });
+
+            // Global keyboard shortcut for search
+            $(document).on('keydown', (e) => {
+                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
+                    e.preventDefault();
+                    $('input[type="search"]').focus();
+                }
             });
         });
     </script>
