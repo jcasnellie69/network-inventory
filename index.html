@@ -285,7 +285,7 @@
 
 <body>
     <h1>🔌 Network Inventory Dashboard</h1>
-    <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated" aria-live="polite">Loading...</span></p>
+    <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated">Loading...</span></p>
 
     <div class="summary-grid">
         <div class="card">
@@ -424,7 +424,8 @@
 
             // Avoid selecting DataTables generated selects (like length menu)
             $('.filters select').on('change', () => {
-            table.on('search.dt', updateClearFiltersBtn);
+                table.on('search.dt', updateClearFiltersBtn);
+            });
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
