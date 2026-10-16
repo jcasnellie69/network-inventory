@@ -29,3 +29,18 @@
 ## 2024-05-30 - Global Search Shortcut with DataTables
 **Learning:** Adding a global keyboard shortcut (like '/') to quickly focus a search field is a common power-user pattern. However, when paired with DataTables and custom filter logic (like a contextual "Clear Filters" button), the custom logic must explicitly listen to the DataTables `search.dt` event to stay in sync with the search state, rather than just dropdown changes.
 **Action:** When adding global search shortcuts, ensure the visual hint is added directly to the placeholder (e.g., `Search (Press '/')...`) for discoverability. Always bind custom 'Clear Filters' logic to the `search.dt` event to accurately reflect the global search state, and explicitly reset it using `table.search('').draw()`. Also avoid broad `$('select')` bindings, as DataTables injects its own dynamic selects (like the length menu).
+## 2026-04-24 - Keyboard Shortcut Discoverability
+**Learning:** Adding global keyboard shortcuts (like `/` to focus a search input) greatly improves keyboard navigation efficiency, but users won't use them if they don't know they exist.
+**Action:** Always include an explicit visual hint directly in the input's `placeholder` (e.g., `Search (Press '/')...`) to improve discoverability without cluttering the UI with additional tooltips or text.
+
+## 2026-04-24 - DataTables Search and Custom Clear Filters
+**Learning:** When building custom "Clear Filters" mechanisms alongside DataTables, relying only on custom dropdown changes will disconnect the clear button from the built-in search input. DataTables generates its own `search` state and length dropdowns which interfere with generic `$('select')` listeners.
+**Action:** Always bind clear filter logic to the `search.dt` event to accurately reflect the global search state, explicitly use `table.search('').draw()` to clear it, and target only specific custom filter IDs to avoid conflicts with DataTables' injected controls.
+
+## 2026-04-24 - Escape Key for Contextual Filter Resets
+**Learning:** Contextual reset actions (like a "Clear Filters" button) can be significantly improved by binding a global reset shortcut (like the `Escape` key), provided the action provides explicit visual hints directly on the button text (e.g., `Clear Filters (Esc)`). This caters well to keyboard power-users without cluttering the UI.
+**Action:** Implement a global `Escape` keyboard event listener to trigger UI state resets. Ensure it explicitly ignores components where `Escape` has a native behavior (e.g., `!$(e.target).is('select')`) and forcefully calls `blur()` on the event target to prevent active elements from continuing to capture subsequent interactions.
+
+## 2026-04-24 - Focus Management on Contextual Hidden Elements
+**Learning:** When an interactive element (like a "Clear Filters" button) hides itself after activation, any keyboard focus it currently holds is lost and dropped back to the `<body>`, breaking keyboard navigation flow. Additionally, if the action can be triggered via a global shortcut (like `Escape`), trying to handle focus conditionally based on the keydown `e.target` is fragile because programmatic clicks don't inherit the keydown's target.
+**Action:** Always consolidate focus restoration logic directly inside the element's primary `click` handler. This ensures that no matter how the action is triggered (mouse click, enter key on focus, or simulated click via a global shortcut), focus is predictably handed off to a logical, stable neighboring element.
