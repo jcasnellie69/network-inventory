@@ -405,10 +405,10 @@
                 const hasModifier = e.ctrlKey || e.metaKey || e.altKey;
                 if (!hasModifier && e.key === '/' && !isTypingContext) {
                     const $search = $('.dataTables_filter input');
-                    if ($search.length) {
-                        e.preventDefault();
-                        $search.focus();
-                    }
+            $(document).on('keydown', (e) => {
+                if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !$(e.target).is('input, textarea, select') && !e.target.isContentEditable) {
+                    e.preventDefault();
+                    $('.dataTables_filter input').focus();
                 }
             });
 
