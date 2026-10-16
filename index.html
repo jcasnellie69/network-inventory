@@ -334,7 +334,7 @@
         <label>Category: <select id="filterCategory">
                 <option value="">All Categories</option>
             </select></label>
-        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters">Clear Filters</button>
+        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
     </div>
 
     <table id="inventoryTable" class="display" style="width:100%">
@@ -399,6 +399,9 @@
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
+                if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
+                    $('#clearFiltersBtn').click();
+                }
             });
 
             $.fn.dataTable.ext.search.push((s, row) => {
@@ -409,12 +412,15 @@
 
             function updateClearFiltersBtn() {
                 const hasFilters = table.search() || $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
+                const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search();
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
                 } else {
                     $('#clearFiltersBtn').hide();
                 }
             }
+
+            table.on('search.dt', updateClearFiltersBtn);
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
@@ -429,6 +435,7 @@
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
+                $('#filterStatus').focus();
             });
         });
     </script>
