@@ -427,6 +427,7 @@
 
             $('#clearFiltersBtn').on('click', () => {
                 $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
+                $('.dataTables_filter input').val('');
                 table.search('').draw();
                 updateClearFiltersBtn();
             });
