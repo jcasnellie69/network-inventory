@@ -401,8 +401,8 @@
             });
 
             // Accessibility: Global search shortcut
-            $(document).on('keydown', (e) => {
-                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
+            $(document).off('keydown.search').on('keydown.search', (e) => {
+                if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !$(e.target).is('input, textarea, select, [contenteditable]')) {
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
