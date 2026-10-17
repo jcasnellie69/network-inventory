@@ -411,6 +411,7 @@
             });
 
             function updateClearFiltersBtn() {
+                const hasFilters = table.search() || $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val();
                 const hasFilters = $('#filterStatus').val() || $('#filterPriority').val() || $('#filterPort').val() || $('#filterCategory').val() || table.search();
                 if (hasFilters) {
                     $('#clearFiltersBtn').show();
@@ -428,6 +429,10 @@
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
+                updateClearFiltersBtn();
+            });
+
+            table.on('search.dt', () => {
                 updateClearFiltersBtn();
             });
 
