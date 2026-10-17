@@ -44,3 +44,7 @@
 ## 2026-04-24 - Focus Management on Contextual Hidden Elements
 **Learning:** When an interactive element (like a "Clear Filters" button) hides itself after activation, any keyboard focus it currently holds is lost and dropped back to the `<body>`, breaking keyboard navigation flow. Additionally, if the action can be triggered via a global shortcut (like `Escape`), trying to handle focus conditionally based on the keydown `e.target` is fragile because programmatic clicks don't inherit the keydown's target.
 **Action:** Always consolidate focus restoration logic directly inside the element's primary `click` handler. This ensures that no matter how the action is triggered (mouse click, enter key on focus, or simulated click via a global shortcut), focus is predictably handed off to a logical, stable neighboring element.
+
+## 2026-04-24 - Network Inventory Dashboard Table Accessibility
+**Learning:** Tables often lack adequate labelling for screen readers. Using `aria-label` provides necessary context to users navigating the page. Also identified a malformed JavaScript block that broke functionality.
+**Action:** Always add `aria-label` to major structural table elements to ensure context is clear for screen reader users. Always check Javascript syntax around event listeners when making changes.
