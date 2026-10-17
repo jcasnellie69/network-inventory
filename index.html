@@ -337,7 +337,7 @@
         <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
     </div>
 
-    <table id="inventoryTable" class="display" style="width:100%">
+    <table id="inventoryTable" class="display" style="width:100%" aria-label="Network Devices Inventory">
         <thead>
             <tr>
                 <th>IP Address</th>
@@ -420,10 +420,6 @@
             }
 
             // Bind to table search event as well to trigger Clear Filters button visibility
-            table.on('search.dt', updateClearFiltersBtn);
-
-            // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
             table.on('search.dt', updateClearFiltersBtn);
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
