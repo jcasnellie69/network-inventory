@@ -334,6 +334,7 @@
         <label>Category: <select id="filterCategory">
                 <option value="">All Categories</option>
             </select></label>
+        <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters (Escape)" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
         <button id="clearFiltersBtn" class="clear-filters-btn" style="display: none;" aria-label="Clear all filters" aria-keyshortcuts="Escape">Clear Filters (Esc)</button>
     </div>
 
@@ -399,6 +400,10 @@
                     e.preventDefault();
                     $('.dataTables_filter input').focus();
                 }
+                if (e.key === 'Escape' && $('#clearFiltersBtn').is(':visible')) {
+                    e.preventDefault();
+                    $('#clearFiltersBtn').click();
+                    $(e.target).blur();
                 if (e.key === 'Escape' && !$(e.target).is('select') && $('#clearFiltersBtn').is(':visible')) {
                     $('#clearFiltersBtn').click();
                 }
