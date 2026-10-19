@@ -57,7 +57,22 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 14px
+            padding: 14px;
+        }
+
+        .card[role="button"] {
+            cursor: pointer;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .card[role="button"]:hover {
+            border-color: #8b949e;
+        }
+
+        .card[role="button"]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
         }
 
         .card h3 {
@@ -292,23 +307,23 @@
             <h3>Total Devices</h3>
             <div class="value" id="totalDevices">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Active status" data-filter-type="Status" data-filter-value="Active">
             <h3>Active</h3>
             <div class="value status-Active" id="activeCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Idle status" data-filter-type="Status" data-filter-value="Idle">
             <h3>Idle</h3>
             <div class="value status-Idle" id="idleCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Inactive status" data-filter-type="Status" data-filter-value="Inactive">
             <h3>Inactive</h3>
             <div class="value status-Inactive" id="inactiveCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Critical priority" data-filter-type="Priority" data-filter-value="Critical">
             <h3>Critical</h3>
             <div class="value priority-Critical" id="criticalCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by High priority" data-filter-type="Priority" data-filter-value="High">
             <h3>High</h3>
             <div class="value priority-High" id="highCount">-</div>
         </div>
@@ -423,9 +438,6 @@
             table.on('search.dt', updateClearFiltersBtn);
 
             // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
-            table.on('search.dt', updateClearFiltersBtn);
-
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
@@ -438,11 +450,16 @@
                 $('#filterStatus').focus();
             });
 
-            // Global keyboard shortcut for search
-            $(document).on('keydown', (e) => {
-                if (e.key === '/' && !$(e.target).is('input, textarea, select')) {
+            // Interactive summary cards as quick filters
+            $('.card[role="button"]').on('click', function() {
+                const filterType = $(this).data('filter-type');
+                const filterValue = $(this).data('filter-value');
+                $('#filter' + filterType).val(filterValue).trigger('change');
+            });
+            $('.card[role="button"]').on('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    $('input[type="search"]').focus();
+                    $(this).click();
                 }
             });
         });
