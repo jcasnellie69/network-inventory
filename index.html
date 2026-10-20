@@ -72,6 +72,21 @@
             font-weight: 600
         }
 
+        .card[role="button"] {
+            cursor: pointer;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .card[role="button"]:hover {
+            border-color: #8b949e;
+        }
+
+        .card[role="button"]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
+        }
+
         .filters {
             background: var(--card);
             border: 1px solid var(--border);
@@ -288,27 +303,27 @@
     <p class="subtitle">MOKERLINK 12-Port Switch + Pi-hole Correlation | Generated: <span id="generated" aria-live="polite">Loading...</span></p>
 
     <div class="summary-grid">
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Clear all filters and show total devices" data-clear="true">
             <h3>Total Devices</h3>
             <div class="value" id="totalDevices">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Active status" data-status="Active">
             <h3>Active</h3>
             <div class="value status-Active" id="activeCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Idle status" data-status="Idle">
             <h3>Idle</h3>
             <div class="value status-Idle" id="idleCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Inactive status" data-status="Inactive">
             <h3>Inactive</h3>
             <div class="value status-Inactive" id="inactiveCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Critical priority" data-priority="Critical">
             <h3>Critical</h3>
             <div class="value priority-Critical" id="criticalCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by High priority" data-priority="High">
             <h3>High</h3>
             <div class="value priority-High" id="highCount">-</div>
         </div>
@@ -422,11 +437,28 @@
             // Bind to table search event as well to trigger Clear Filters button visibility
             table.on('search.dt', updateClearFiltersBtn);
 
-            // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
-            table.on('search.dt', updateClearFiltersBtn);
-
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
+                table.draw();
+                updateClearFiltersBtn();
+            });
+
+            // Interactive Summary Cards Logic
+            $('.card[role="button"]').on('click keydown', function(e) {
+                if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+                if (e.type === 'keydown') e.preventDefault();
+
+                $('#filterStatus, #filterPriority, #filterPort, #filterCategory').val('');
+                table.search('');
+
+                const $card = $(this);
+                if ($card.data('clear')) {
+                    // Just clearing filters
+                } else if ($card.data('status')) {
+                    $('#filterStatus').val($card.data('status'));
+                } else if ($card.data('priority')) {
+                    $('#filterPriority').val($card.data('priority'));
+                }
+
                 table.draw();
                 updateClearFiltersBtn();
             });
