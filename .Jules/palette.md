@@ -44,3 +44,7 @@
 ## 2026-04-24 - Focus Management on Contextual Hidden Elements
 **Learning:** When an interactive element (like a "Clear Filters" button) hides itself after activation, any keyboard focus it currently holds is lost and dropped back to the `<body>`, breaking keyboard navigation flow. Additionally, if the action can be triggered via a global shortcut (like `Escape`), trying to handle focus conditionally based on the keydown `e.target` is fragile because programmatic clicks don't inherit the keydown's target.
 **Action:** Always consolidate focus restoration logic directly inside the element's primary `click` handler. This ensures that no matter how the action is triggered (mouse click, enter key on focus, or simulated click via a global shortcut), focus is predictably handed off to a logical, stable neighboring element.
+
+## 2026-04-24 - Interactive Summary Metrics
+**Learning:** Dashboard summary metric cards represent aggregate data states that users naturally want to explore. Making these cards interactive quick-filters significantly improves UX by combining high-level information with direct navigation without adding extra UI clutter.
+**Action:** Dashboard summary metric cards should be implemented as interactive quick-filters when possible by adding `role="button"`, `tabindex="0"`, explicit `hover`/`focus-visible` styles, and an event listener (click/keydown) that automatically updates the primary filter dropdowns and redraws the data view.
