@@ -57,7 +57,22 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 14px
+            padding: 14px;
+            transition: border-color 0.2s ease, outline 0.2s ease;
+        }
+
+        .card[role="button"] {
+            cursor: pointer;
+        }
+
+        .card[role="button"]:hover {
+            border-color: #8b949e;
+        }
+
+        .card[role="button"]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
         }
 
         .card h3 {
@@ -292,23 +307,23 @@
             <h3>Total Devices</h3>
             <div class="value" id="totalDevices">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Status: Active">
             <h3>Active</h3>
             <div class="value status-Active" id="activeCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Status: Idle">
             <h3>Idle</h3>
             <div class="value status-Idle" id="idleCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Status: Inactive">
             <h3>Inactive</h3>
             <div class="value status-Inactive" id="inactiveCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Priority: Critical">
             <h3>Critical</h3>
             <div class="value priority-Critical" id="criticalCount">-</div>
         </div>
-        <div class="card">
+        <div class="card" role="button" tabindex="0" aria-label="Filter by Priority: High">
             <h3>High</h3>
             <div class="value priority-High" id="highCount">-</div>
         </div>
@@ -422,13 +437,26 @@
             // Bind to table search event as well to trigger Clear Filters button visibility
             table.on('search.dt', updateClearFiltersBtn);
 
-            // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
-            table.on('search.dt', updateClearFiltersBtn);
-
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
                 updateClearFiltersBtn();
+            });
+
+            // Interactive Summary Cards (Quick-Filters)
+            $('.card[role="button"]').on('click keydown', function(e) {
+                if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+                if (e.type === 'keydown') e.preventDefault(); // Prevent page scroll on Space
+
+                const cardTitle = $(this).find('h3').text().trim();
+                if (['Active', 'Idle', 'Inactive'].includes(cardTitle)) {
+                    $('#filterStatus').val(cardTitle);
+                } else if (['Critical', 'High'].includes(cardTitle)) {
+                    $('#filterPriority').val(cardTitle);
+                }
+
+                table.draw();
+                updateClearFiltersBtn();
+                $('#inventoryTable_wrapper').focus();
             });
 
             $('#clearFiltersBtn').on('click', () => {
