@@ -44,3 +44,7 @@
 ## 2026-04-24 - Focus Management on Contextual Hidden Elements
 **Learning:** When an interactive element (like a "Clear Filters" button) hides itself after activation, any keyboard focus it currently holds is lost and dropped back to the `<body>`, breaking keyboard navigation flow. Additionally, if the action can be triggered via a global shortcut (like `Escape`), trying to handle focus conditionally based on the keydown `e.target` is fragile because programmatic clicks don't inherit the keydown's target.
 **Action:** Always consolidate focus restoration logic directly inside the element's primary `click` handler. This ensures that no matter how the action is triggered (mouse click, enter key on focus, or simulated click via a global shortcut), focus is predictably handed off to a logical, stable neighboring element.
+
+## 2024-05-18 - Dashboard metric cards as interactive quick-filters
+**Learning:** When making container elements with visible text (like summary metric cards) interactive via `role="button"`, do not use `aria-label` if it will override the element's visible content for screen readers. Instead, use `aria-description` or structurally associate text with `aria-labelledby`/`aria-describedby` to preserve the original visible text announcement.
+**Action:** Adding interactivity to cards using `role="button"` and `tabindex="0"`, providing keyboard accessibility handling via enter/space keys and using `aria-description` to provide additional context.
