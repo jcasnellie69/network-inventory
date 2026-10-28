@@ -1,0 +1,2 @@
+127.0.0.1 - - [28/Oct/2026 16:51:16] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 16:51:17] "GET /network-inventory.json HTTP/1.1" 200 -
