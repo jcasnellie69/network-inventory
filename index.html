@@ -72,6 +72,24 @@
             font-weight: 600
         }
 
+        .card.clickable {
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .card.clickable:hover {
+            border-color: var(--accent);
+        }
+
+        .card.clickable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .card.clickable:active {
+            transform: scale(0.98);
+        }
+
         .filters {
             background: var(--card);
             border: 1px solid var(--border);
@@ -292,23 +310,23 @@
             <h3>Total Devices</h3>
             <div class="value" id="totalDevices">-</div>
         </div>
-        <div class="card">
+        <div class="card clickable" role="button" tabindex="0" aria-description="Filter table by Active status">
             <h3>Active</h3>
             <div class="value status-Active" id="activeCount">-</div>
         </div>
-        <div class="card">
+        <div class="card clickable" role="button" tabindex="0" aria-description="Filter table by Idle status">
             <h3>Idle</h3>
             <div class="value status-Idle" id="idleCount">-</div>
         </div>
-        <div class="card">
+        <div class="card clickable" role="button" tabindex="0" aria-description="Filter table by Inactive status">
             <h3>Inactive</h3>
             <div class="value status-Inactive" id="inactiveCount">-</div>
         </div>
-        <div class="card">
+        <div class="card clickable" role="button" tabindex="0" aria-description="Filter table by Critical priority">
             <h3>Critical</h3>
             <div class="value priority-Critical" id="criticalCount">-</div>
         </div>
-        <div class="card">
+        <div class="card clickable" role="button" tabindex="0" aria-description="Filter table by High priority">
             <h3>High</h3>
             <div class="value priority-High" id="highCount">-</div>
         </div>
@@ -423,8 +441,7 @@
             table.on('search.dt', updateClearFiltersBtn);
 
             // Avoid selecting DataTables generated selects (like length menu)
-            $('.filters select').on('change', () => {
-            table.on('search.dt', updateClearFiltersBtn);
+            // table.on('search.dt', updateClearFiltersBtn); // Removed broken duplicated line
 
             $('#filterStatus, #filterPriority, #filterPort, #filterCategory').on('change', () => {
                 table.draw();
@@ -436,6 +453,22 @@
                 table.search('').draw();
                 updateClearFiltersBtn();
                 $('#filterStatus').focus();
+            });
+
+            $('.summary-grid .card.clickable').on('click keydown', function(e) {
+                if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+                if (e.type === 'keydown' && e.key === ' ') e.preventDefault();
+
+                const title = $(this).find('h3').text();
+
+                if (['Active', 'Idle', 'Inactive'].includes(title)) {
+                    $('#filterStatus').val(title);
+                } else if (['Critical', 'High'].includes(title)) {
+                    $('#filterPriority').val(title);
+                }
+
+                table.draw();
+                updateClearFiltersBtn();
             });
 
             // Global keyboard shortcut for search
